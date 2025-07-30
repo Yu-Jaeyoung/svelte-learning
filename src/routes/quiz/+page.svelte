@@ -1,43 +1,28 @@
 <script lang="ts">
 import StatCardQuiz from "$lib/components/ui/StatCardQuiz.svelte";
 
-let userName = $state("");
-let userNameLength = $derived(userName.length);
-
-let activatedStatus = $state(false);
-
-$effect(() => {
-  console.info(
-    `[Effect] StatCardQuiz 'activatedStatus' 의 값이 '${activatedStatus}'로 업데이트`,
-  );
-});
+let userName = $state<string>("");
+let dateLoadPromise = $state<Promise<string> | null>(null);
 
 function getTime() {
-  const date = new Date();
+  dateLoadPromise = new Promise<string>((resolve) => {
+    const intl = new Intl.DateTimeFormat("ko-KR", {
+      dateStyle: "full",
+      timeStyle: "medium",
+    });
 
-  return date.toLocaleTimeString();
-}
-
-function timePromise() {
-  new Promise<string>(() => {
     setTimeout(() => {
-      strValue = getTime();
+      resolve(intl.format(new Date()));
     }, 2000);
   });
 }
-
-function refresh() {
-  strValue = "시간 정보 로딩 중...";
-}
-
-let strValue = $state("시간 정보 로딩 중...");
 </script>
 
 <h1 class="text-2xl font-bold mb-4">
   환영합니다.
 </h1>
 
-<StatCardQuiz title="사용자 이름 길이" minLength={userNameLength}/>
+<StatCardQuiz title="사용자 이름 길이" minLength={userName.length}/>
 <div class="mt-8 p-6 bg-white rounded-lg shadow-md dark:bg-gray-800">
   <h3 class="font-bold text-lg mb-4">
     기능 테스트 섹션
@@ -56,10 +41,10 @@ let strValue = $state("시간 정보 로딩 중...");
              placeholder="이름을 입력하여 글자 수 확인"
       >
       <span class="text-gray-600 dark:text-gray-400">
-        길이: <span class="font-semibold text-blue-500 text-lg">{userNameLength}</span>
+        길이: <span class="font-semibold text-blue-500 text-lg">{userName.length}</span>
       </span>
     </div>
-    {#if userNameLength > 10}
+    {#if userName.length > 8}
       <p class="mt-2 text-sm text-green-600 dark:text-green-500">
         환영합니다, <span class="font-bold">{userName}</span> 님!
       </p>
@@ -73,22 +58,19 @@ let strValue = $state("시간 정보 로딩 중...");
       <button
         id="dataLoadButton"
         class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition-colors"
-        onclick={()=> {
-          activatedStatus = !activatedStatus;
-
-          if(activatedStatus) {
-              timePromise();
-          } else {
-            refresh();
-          }
-
-      }}>
+        onclick={getTime}>
         데이터 로딩
       </button>
 
       <div class="flex items-center gap-2">
-        {#if activatedStatus}
-          <span class="font-medium text-yellow-600 dark:text-yellow-400">{strValue}</span>
+        {#if dateLoadPromise}
+          {#await dateLoadPromise}
+            <p class="font-semibold">로딩중...</p>
+            {:then date}
+          <p class="font-medium text-yellow-600 dark:text-yellow-400">{date}</p>
+            {:catch e}
+              <p class="font-semibold text-red-500">에러 발생 : {e.message}</p>
+            {/await}
         {/if}
       </div>
     </div>
