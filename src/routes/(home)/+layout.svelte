@@ -31,7 +31,7 @@ $effect(() => {
       <ul>
         <li>
           <a
-            href="/static"
+            href="/"
             class="block px-4 py-2 rounded-lg hover:bg-slate-100
                   dark:hover:bg-gray-700">
             HOME
@@ -39,7 +39,7 @@ $effect(() => {
         </li>
         <li>
           <a
-            href="/static"
+            href="/user"
             class="block px-4 py-2 rounded-lg hover:bg-slate-100
                   dark:hover:bg-gray-700">
             USER
