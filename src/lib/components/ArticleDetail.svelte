@@ -1,7 +1,7 @@
 <script lang="ts">
-import type { Article } from "$lib/data";
+  import type { Article } from "$lib/data";
 
-let { article } = $props<{ article: Article }>();
+  let { article } = $props<{ article: Article }>();
 
 function formatDate(date: Date): string {
   const year = date.getFullYear();

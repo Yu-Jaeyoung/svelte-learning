@@ -1,7 +1,7 @@
 <script lang="ts">
-import { articles } from "$lib/data";
+  import { articles } from "$lib/data";
 
-const itemsPerPage = 10;
+  const itemsPerPage = 10;
 let currentPage = $state(1);
 
 function formatDate(date: Date): string {

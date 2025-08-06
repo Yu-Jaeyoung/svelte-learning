@@ -1,7 +1,18 @@
 <script lang="ts">
 import "@/app.css";
+import { getTheme, toggleTheme } from "$lib/theme.svelte";
 
 const { children } = $props();
+
+$effect(() => {
+  if (typeof document !== "undefined") {
+    if (getTheme() === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }
+});
 </script>
 
 <div
@@ -20,8 +31,8 @@ const { children } = $props();
       <ul>
         <li>
           <a
-             href="/static"
-             class="block px-4 py-2 rounded-lg hover:bg-slate-100
+            href="/static"
+            class="block px-4 py-2 rounded-lg hover:bg-slate-100
                   dark:hover:bg-gray-700">
             HOME
           </a>
@@ -35,8 +46,18 @@ const { children } = $props();
           </a>
         </li>
       </ul>
-    </nav>
 
+      <button onclick={toggleTheme}
+              class="flex items-center gap-2
+                     w-full text-left px-4 py-2 rounded-lg
+                     hover:bg-slate-100 dark:hover:bg-gray-700">
+        {#if getTheme() === "light"}
+          <span>🌙</span><span>Dark Mode</span>
+        {:else}
+          <span>☀️</span><span>Light Mode</span>
+        {/if}
+      </button>
+    </nav>
   </aside>
   <div class="flex flex-col flex-1">
     <!--Header-->
@@ -54,12 +75,12 @@ const { children } = $props();
   </div>
 
 
-<!--  <div class="flex flex-col flex-1">-->
-<!--    &lt;!&ndash;Footer&ndash;&gt;-->
-<!--    <footer>-->
-<!--      <h1 class="text-lg font-semibold">-->
-<!--        국립한밭대학교 무선통신소프트웨어 연구실-->
-<!--      </h1>-->
-<!--    </footer>-->
-<!--  </div>-->
+  <!--  <div class="flex flex-col flex-1">-->
+  <!--    &lt;!&ndash;Footer&ndash;&gt;-->
+  <!--    <footer>-->
+  <!--      <h1 class="text-lg font-semibold">-->
+  <!--        국립한밭대학교 무선통신소프트웨어 연구실-->
+  <!--      </h1>-->
+  <!--    </footer>-->
+  <!--  </div>-->
 </div>
