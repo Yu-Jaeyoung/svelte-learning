@@ -1,8 +1,17 @@
 <script lang="ts">
-  import { articles } from "$lib/data";
+import { articles } from "$lib/data";
 
-  const itemsPerPage = 10;
+const itemsPerPage = 10;
+
 let currentPage = $state(1);
+
+if (typeof window !== "undefined") {
+  const saved = localStorage.getItem("currentPage");
+
+  if (saved) {
+    currentPage = Number(localStorage.getItem("currentPage"));
+  }
+}
 
 function formatDate(date: Date): string {
   const year = date.getFullYear();
@@ -33,6 +42,10 @@ const { paginatedArticles, totalPages } = $derived.by(() => {
 function goToPage(page: number) {
   if (page >= 1 && page <= totalPages) {
     currentPage = page;
+  }
+
+  if (typeof window !== "undefined") {
+    localStorage.setItem("currentPage", currentPage.toString());
   }
 }
 </script>
