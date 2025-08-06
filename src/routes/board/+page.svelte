@@ -3,18 +3,10 @@ import { goto } from "$app/navigation";
 import type { PageData } from "./$types";
 
 let { data } = $props<{ data: PageData }>();
+
 const allPosts = $derived(data.posts);
-let currentPage = $state(data.currentPage);
-const pageSize = 10;
-
-$effect(() => {
-  currentPage = data.currentPage;
-});
-
-const totalPages = $derived(Math.ceil(allPosts.length / pageSize));
-const paginatedPosts = $derived(
-  allPosts.slice((currentPage - 1) * pageSize, currentPage * pageSize),
-);
+const currentPage = $derived(data.currentPage);
+const totalPages = $derived(data.totalPages);
 
 function goToPage(page: number) {
   if (page >= 1 && page <= totalPages) {
@@ -38,7 +30,7 @@ function goToPage(page: number) {
       </tr>
       </thead>
       <tbody>
-      {#each paginatedPosts as post (post.id)}
+      {#each allPosts as post (post.id)}
         <tr class="bg-white border-b hover:bg-gray-50">
           <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
             {post.id}
