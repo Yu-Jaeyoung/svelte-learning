@@ -1,5 +1,5 @@
 <script lang="ts">
-import { articles } from "$lib/data";
+import { articles } from "$lib/data/article";
 
 const itemsPerPage = 10;
 

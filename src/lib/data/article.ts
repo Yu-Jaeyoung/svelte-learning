@@ -1,11 +1,4 @@
-export type Article = {
-  id: number;
-  title: string;
-  author: string;
-  date: Date;
-  viewCount: number;
-  content: string;
-};
+import type { Article } from "$lib/types/article";
 
 export const articles: Array<Article> = [
   {
